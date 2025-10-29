@@ -1,0 +1,50 @@
+{
+  "name": "use-majboori",
+  "version": "1.0.0",
+  "description": "A React hook that forces you to justify your useEffect usage with a reason",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "prepublishOnly": "pnpm build",
+    "lint": "tsc --noEmit"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "useEffect",
+    "majboori",
+    "helplessness",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.9.2",
+    "@types/react": "^18.2.0",
+    "react": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/use-majboori.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/use-majboori/issues"
+  }
+}
