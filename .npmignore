@@ -6,4 +6,7 @@ tsconfig.json
 .idea
 .vscode
 node_modules
+example.tsx
+.eslintrc.example.js
+PUBLISHING.md
 

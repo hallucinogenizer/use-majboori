@@ -65,9 +65,79 @@ In development mode, `useMajboori` will:
 
 In production mode, it silently passes through to `useEffect` with no overhead.
 
-## Pair with ESLint
+## ESLint Plugin (Enforcement)
 
-For maximum effectiveness, add an ESLint rule to ban direct `useEffect` usage:
+This package includes an ESLint plugin to **enforce** the use of `useMajboori` by forbidding direct `useEffect` usage!
+
+### Setup
+
+**1. Install the package** (if you haven't already):
+
+```bash
+pnpm add use-majboori
+```
+
+**2. Configure ESLint** (ESLint 8.x):
+
+Create or update your `.eslintrc.js` (or `.eslintrc.json`):
+
+```javascript
+module.exports = {
+  plugins: ['use-majboori'],
+  rules: {
+    'use-majboori/no-use-effect': 'error',
+  },
+};
+```
+
+Or use the recommended config:
+
+```javascript
+module.exports = {
+  extends: ['plugin:use-majboori/recommended'],
+};
+```
+
+**3. Register the plugin in your ESLint config**:
+
+```javascript
+// .eslintrc.js
+const useMajbooriPlugin = require('use-majboori/eslint-plugin');
+
+module.exports = {
+  plugins: {
+    'use-majboori': useMajbooriPlugin,
+  },
+  rules: {
+    'use-majboori/no-use-effect': 'error',
+  },
+};
+```
+
+### What it Does
+
+The `no-use-effect` rule will error on:
+
+❌ **Direct imports**:
+```typescript
+import { useEffect } from 'react'; // ❌ Error!
+```
+
+❌ **React.useEffect calls**:
+```typescript
+import React from 'react';
+React.useEffect(() => {}, []); // ❌ Error!
+```
+
+✅ **Forces you to use useMajboori**:
+```typescript
+import { useMajboori } from 'use-majboori'; // ✅ Good!
+useMajboori(() => {}, [], "Valid reason here");
+```
+
+### Alternative: Built-in ESLint Rule
+
+If you prefer not to use the plugin, you can also use ESLint's built-in `no-restricted-imports`:
 
 ```json
 {

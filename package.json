@@ -1,7 +1,7 @@
 {
   "name": "use-majboori",
   "version": "1.0.0",
-  "description": "A React hook that forces you to justify your useEffect usage with a reason",
+  "description": "A React hook that forces you to justify your useEffect usage with a reason, plus an ESLint plugin to enforce it",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -10,13 +10,18 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
+    },
+    "./eslint-plugin": {
+      "types": "./dist/eslint-plugin.d.ts",
+      "import": "./dist/eslint-plugin.mjs",
+      "require": "./dist/eslint-plugin.js"
     }
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "build": "tsup src/index.ts src/eslint-plugin.ts --format cjs,esm --dts",
     "prepublishOnly": "pnpm build",
     "lint": "tsc --noEmit"
   },
@@ -26,16 +31,26 @@
     "useEffect",
     "majboori",
     "helplessness",
-    "typescript"
+    "typescript",
+    "eslint",
+    "eslint-plugin",
+    "linting"
   ],
   "author": "",
   "license": "MIT",
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
   },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    }
+  },
   "devDependencies": {
+    "@types/eslint": "^8.56.0",
     "@types/node": "^24.9.2",
     "@types/react": "^18.2.0",
+    "eslint": "^8.57.0",
     "react": "^18.2.0",
     "tsup": "^8.0.0",
     "typescript": "^5.0.0"
