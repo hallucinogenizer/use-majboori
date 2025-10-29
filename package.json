@@ -1,6 +1,6 @@
 {
   "name": "use-majboori",
-  "version": "1.0.1-beta.0",
+  "version": "1.0.0",
   "description": "A React hook that forces you to justify your useEffect usage with a reason, plus an ESLint plugin to enforce it",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
