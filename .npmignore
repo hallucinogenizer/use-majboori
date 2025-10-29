@@ -8,5 +8,6 @@ tsconfig.json
 node_modules
 example.tsx
 .eslintrc.example.js
+eslint.config.example.mjs
 PUBLISHING.md
 

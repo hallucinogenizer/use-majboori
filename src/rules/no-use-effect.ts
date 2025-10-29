@@ -13,26 +13,37 @@ const rule: Rule.RuleModule = {
     schema: [],
   },
   create(context: Rule.RuleContext) {
+    // Track the local names that refer to useEffect
+    const useEffectLocalNames = new Set<string>();
+
     return {
       ImportDeclaration(node) {
-        // Check if importing from 'react'
+        // Track imports of useEffect from 'react'
         if (node.source.value === 'react') {
-          // Check each specifier
           node.specifiers.forEach((specifier) => {
             if (
               specifier.type === 'ImportSpecifier' &&
               specifier.imported.type === 'Identifier' &&
               specifier.imported.name === 'useEffect'
             ) {
-              context.report({
-                node: specifier,
-                messageId: 'noUseEffect',
-              });
+              // Track the local name (in case it's aliased)
+              useEffectLocalNames.add(specifier.local.name);
             }
           });
         }
       },
       CallExpression(node) {
+        // Check for direct useEffect() calls
+        if (
+          node.callee.type === 'Identifier' &&
+          useEffectLocalNames.has(node.callee.name)
+        ) {
+          context.report({
+            node: node.callee,
+            messageId: 'noUseEffect',
+          });
+        }
+
         // Check for React.useEffect() calls
         if (
           node.callee.type === 'MemberExpression' &&

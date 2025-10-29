@@ -77,28 +77,28 @@ This package includes an ESLint plugin to **enforce** the use of `useMajboori` b
 pnpm add use-majboori
 ```
 
-**2. Configure ESLint** (ESLint 8.x):
+**2. Configure ESLint**:
 
-Create or update your `.eslintrc.js` (or `.eslintrc.json`):
+#### Flat Config (ESLint 9.x / eslint.config.mjs) - Recommended
 
 ```javascript
-module.exports = {
-  plugins: ['use-majboori'],
-  rules: {
-    'use-majboori/no-use-effect': 'error',
+// eslint.config.mjs
+import useMajbooriPlugin from 'use-majboori/eslint-plugin';
+
+export default [
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    plugins: {
+      'use-majboori': useMajbooriPlugin,
+    },
+    rules: {
+      'use-majboori/no-use-effect': 'error',
+    },
   },
-};
+];
 ```
 
-Or use the recommended config:
-
-```javascript
-module.exports = {
-  extends: ['plugin:use-majboori/recommended'],
-};
-```
-
-**3. Register the plugin in your ESLint config**:
+#### Legacy Config (ESLint 8.x / .eslintrc.js)
 
 ```javascript
 // .eslintrc.js
@@ -114,25 +114,59 @@ module.exports = {
 };
 ```
 
+Or with string-based plugin registration:
+
+```javascript
+module.exports = {
+  plugins: ['use-majboori'],
+  rules: {
+    'use-majboori/no-use-effect': 'error',
+  },
+};
+```
+
 ### What it Does
 
-The `no-use-effect` rule will error on:
+The `no-use-effect` rule will error **on the line where `useEffect` is called**, not on the import:
 
-❌ **Direct imports**:
+❌ **Direct useEffect calls**:
 ```typescript
-import { useEffect } from 'react'; // ❌ Error!
+import { useEffect } from 'react'; // Import is fine
+
+function MyComponent() {
+  useEffect(() => {  // ❌ Error appears HERE on usage!
+    // ...
+  }, []);
+}
 ```
 
 ❌ **React.useEffect calls**:
 ```typescript
 import React from 'react';
-React.useEffect(() => {}, []); // ❌ Error!
+
+function MyComponent() {
+  React.useEffect(() => {  // ❌ Error appears HERE!
+    // ...
+  }, []);
+}
 ```
 
 ✅ **Forces you to use useMajboori**:
 ```typescript
-import { useMajboori } from 'use-majboori'; // ✅ Good!
-useMajboori(() => {}, [], "Valid reason here");
+import { useMajboori } from 'use-majboori';
+
+function MyComponent() {
+  useMajboori(() => {  // ✅ Good!
+    // ...
+  }, [], "Valid reason here");
+}
+```
+
+**Note**: The rule also handles aliased imports:
+```typescript
+import { useEffect as useReactEffect } from 'react';
+
+useReactEffect(() => {}, []); // ❌ Still caught!
 ```
 
 ### Alternative: Built-in ESLint Rule
